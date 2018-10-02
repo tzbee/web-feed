@@ -1,0 +1,22 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "app": "node src/app",
+    "test": "mocha test",
+    "run": "node src/app"
+  },
+  "author": "tzbee",
+  "license": "ISC",
+  "dependencies": {
+    "app-root-path": "^2.1.0",
+    "minimist": "^1.2.0",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  },
+  "keywords": [],
+  "description": ""
+}
