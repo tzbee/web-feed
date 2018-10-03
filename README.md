@@ -18,13 +18,13 @@ a external app (chrome extension in this case).
 
 ### add
 
-Adds a plugin to the application
+Add a plugin to the application
 
 `crawler add --module=path/to/plugin-module`
 
 ### remove
 
-Removes a plugin from the application
+Remove a plugin from the application
 
 `crawler remove --module=module-id`
 
@@ -48,3 +48,8 @@ Input and output must be sent through the standard input
 and read through standard err streams.[More info later]
 
 `crawler daemon`
+
+### plugin-info
+
+Display the plugin api specified by its own configuration file
+[To be implemented]
