@@ -24,7 +24,7 @@ Adds a plugin to the application
 
 ### remove
 
-Removes a plugin to the application
+Removes a plugin from the application
 
 `crawler remove --module=module-id`
 
@@ -32,7 +32,7 @@ Removes a plugin to the application
 
 List the plugins installed
 
-`crawler --list`
+`crawler list`
 
 ### crawl
 
@@ -44,7 +44,7 @@ The results are displayed on the standard output in json format.
 ### daemon
 
 Start the daemon.
-Input and ouptput must be sent through the standard input
+Input and output must be sent through the standard input
 and read through standard err streams.[More info later]
 
 `crawler daemon`
