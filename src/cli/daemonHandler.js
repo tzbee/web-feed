@@ -3,9 +3,9 @@ const log = require('../log');
 // Start the daemon
 module.exports = (dispatcher, crawler, commandCache) => {
     return () => {
-        dispatcher.on('CRAWL', ({ commandID, options }) => {
+        dispatcher.on('CRAWL', ({ pluginID, options }) => {
             crawler
-                .crawl(commandID, options)
+                .crawl(pluginID, options)
                 .then(results => {
                     dispatcher.sendMessage({
                         command: 'CRAWL:RESULTS',

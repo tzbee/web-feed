@@ -1,6 +1,5 @@
 const log = require('./cli-log');
 const args = require('minimist')(process.argv.slice(2));
-const path = require('path');
 
 const PluginCache = require('../PluginCache');
 const StdioDispatcher = require('../StdioDispatcher');

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { runCommands } = require('./cli/crawler-cli');
 const log = require('./log');
 
@@ -6,4 +8,3 @@ try {
 } catch (err) {
 	log(err.message);
 }
-

@@ -2,12 +2,15 @@ const log = require('./log');
 const path = require('path');
 const fs = require('fs');
 
-const npmWrapper = new (require('./NPMWrapper'))({ log });
-
-const configFilePath = '../plugins.json';
+const DEFAULT_PLUGIN_DIR = path.resolve(
+	require('app-root-path').toString(),
+	'..',
+	'plugins'
+);
 
 module.exports = class PluginCache {
-	constructor() {
+	constructor(pluginsDir = DEFAULT_PLUGIN_DIR) {
+		this.pluginsDir = pluginsDir;
 		this.plugins = {};
 		this._load();
 	}
@@ -28,20 +31,44 @@ module.exports = class PluginCache {
 		return Object.values(this.plugins);
 	}
 
+	_readPluginDir() {
+		log('Reading plugin directory');
+
+		const { pluginsDir } = this;
+
+		// for now, we assume the plugin directory content contains valid plugin packages
+		// TODO Validity checks
+		const dirContent = fs.readdirSync(pluginsDir);
+
+		log(`Found ${dirContent.length} plugins`);
+		return dirContent.map(pluginDirName => {
+			return {
+				id: pluginDirName,
+				path: path.join(pluginsDir, pluginDirName)
+			};
+		});
+	}
+
+	// Sync
 	_load() {
-		log('Loading commands');
+		log('Loading plugins');
 
 		// Get the plugin modules to load
-		const pluginModuleIDs = this._loadPluginIDs();
+		const plugins = this._readPluginDir();
 
 		// Load the plugin modules into the cache
-		const commandMap = pluginModuleIDs.reduce((map, pluginID) => {
-			const commands = require(pluginID);
-			commands.forEach(Command => {
-				const command = new Command({ log: log });
-				map[command.id] = command;
-			});
-			return map;
+		const commandMap = plugins.reduce((map, { path: pluginPath }) => {
+			try {
+				const commands = require(pluginPath);
+				commands.forEach(Command => {
+					const command = new Command({ log: log });
+					map[command.id] = command;
+				});
+				return map;
+			} catch (err) {
+				log(err.message);
+				return map;
+			}
 		}, {});
 
 		this.plugins = commandMap;
@@ -73,38 +100,6 @@ module.exports = class PluginCache {
 		return commandCopy;
 	}
 
-	// Async
-	// Returns Promise resolving in the module ID
-
-	_installModule(modulePath) {
-		log(`Installing module from ${modulePath}`);
-		return npmWrapper.install([modulePath]).then(output => {
-			log(output);
-			const moduleID = this._getModuleID(modulePath);
-			log(`Module ${moduleID} installed`);
-			return moduleID;
-		});
-	}
-
-	// Async
-	// Returns Promise
-	_uninstallModule(moduleID) {
-		log(`Uninstalling module ${moduleID}`);
-		return npmWrapper.remove([moduleID]).then(output => {
-			log(output);
-			log(`Module ${moduleID} removed`);
-			return moduleID;
-		});
-	}
-
-	/*
-        Sync
-    */
-	_loadPluginIDs() {
-		log(`Loading plugins from config file ${configFilePath}`);
-		return require(configFilePath);
-	}
-
 	// Sync
 	_getModuleID(packagePath) {
 		const packageConfig = require(path.resolve(
@@ -116,6 +111,7 @@ module.exports = class PluginCache {
 
 	// Async
 	// Returns Promise
+	// todo create file if it does not exist
 	_writeToPluginFile(pluginIDs) {
 		return new Promise((resolve, reject) => {
 			fs.writeFile(

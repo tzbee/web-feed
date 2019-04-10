@@ -15,7 +15,11 @@ module.exports = class Crawler {
                 options
             );
 
-            log(`Running command ${commandID}`);
+            log(
+                `Running command ${commandID} with options ${JSON.stringify(
+                    normalizedOptions
+                )}`
+            );
 
             return command.run(normalizedOptions);
         } catch (err) {
@@ -40,10 +44,10 @@ module.exports = class Crawler {
             }
         );
 
-        return normalizedPropList.reduce(
-            (res, prop) => (res[prop.key] = prop.value) && res,
-            {}
-        );
+        return normalizedPropList.reduce((res, prop) => {
+            res[prop.key] = prop.value;
+            return res;
+        }, {});
     }
 
     _isArray(arg) {

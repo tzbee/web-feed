@@ -2,10 +2,10 @@
   "name": "crawler",
   "version": "1.0.0",
   "main": "src/app.js",
+  "bin": "./src/app.js",
   "scripts": {
-    "app": "node src/app",
     "test": "mocha test",
-    "run": "node src/app"
+    "run": "src/app"
   },
   "author": "tzbee",
   "license": "ISC",
@@ -15,6 +15,12 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-standard": "^4.0.0",
     "mocha": "^4.0.1"
   },
   "keywords": [],

@@ -1,7 +1,7 @@
 /*
-	Network wrapper
-		Request a url 
-		Returns a Promise resolving in the data
+    Network wrapper
+        Request a url 
+        Returns a Promise resolving in the data
 */
 
 const request = require('request');
@@ -12,7 +12,9 @@ module.exports = url => {
             if (!error && response.statusCode === 200) {
                 resolve(body);
             } else {
-                const message = (error && error.message) || ('Status code: ' + response.statusCode);
+                const message =
+                    (error && error.message) ||
+                    'Status code: ' + response.statusCode;
                 reject('Error during network request: ' + message);
             }
         });
