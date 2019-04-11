@@ -1,4 +1,4 @@
-const log = require('./cli-log');
+const log = require('../cli-log');
 
 const displayCommand = ({
     id,

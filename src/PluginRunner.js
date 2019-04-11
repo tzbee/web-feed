@@ -1,14 +1,14 @@
 const log = require('./log');
 
-module.exports = class Crawler {
-    constructor(commandCache) {
-        this.commandCache = commandCache;
+module.exports = class PluginRunner {
+    constructor(pluginCache) {
+        this.pluginCache = pluginCache;
     }
 
     // Async
-    crawl(commandID, options) {
+    run(pluginID, options) {
         try {
-            const command = this.commandCache.getCommandByID(commandID);
+            const command = this.pluginCache.getCommandByID(pluginID);
 
             const normalizedOptions = this._normalizeCommandProps(
                 command,
@@ -16,7 +16,7 @@ module.exports = class Crawler {
             );
 
             log(
-                `Running command ${commandID} with options ${JSON.stringify(
+                `Running plugin ${pluginID} with options ${JSON.stringify(
                     normalizedOptions
                 )}`
             );
@@ -24,7 +24,9 @@ module.exports = class Crawler {
             return command.run(normalizedOptions);
         } catch (err) {
             return Promise.reject(
-                new Error(`There was a problem while crawling: ${err.message}`)
+                new Error(
+                    `There was a problem while runing plugin: ${err.message}`
+                )
             );
         }
     }

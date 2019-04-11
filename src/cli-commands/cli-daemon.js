@@ -1,11 +1,11 @@
 const log = require('../log');
 
 // Start the daemon
-module.exports = (dispatcher, crawler, commandCache) => {
+module.exports = (dispatcher, pluginRunner, pluginCache) => {
     return () => {
-        dispatcher.on('CRAWL', ({ pluginID, options }) => {
-            crawler
-                .crawl(pluginID, options)
+        dispatcher.on('RUN_PLUGIN', ({ pluginID, options }) => {
+            pluginRunner
+                .run(pluginID, options)
                 .then(results => {
                     dispatcher.sendMessage({
                         command: 'CRAWL:RESULTS',
@@ -16,7 +16,7 @@ module.exports = (dispatcher, crawler, commandCache) => {
         });
 
         dispatcher.on('LOAD_COMMANDS', () => {
-            const commands = commandCache.get();
+            const commands = pluginCache.get();
             dispatcher.sendMessage({
                 command: 'LOAD_COMMANDS:RESPONSE',
                 commands
