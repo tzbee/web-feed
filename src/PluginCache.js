@@ -32,9 +32,8 @@ module.exports = class PluginCache {
 	}
 
 	_readPluginDir() {
-		log('Reading plugin directory');
-
 		const { pluginsDir } = this;
+		log(`Reading plugin directory ${pluginsDir}`);
 
 		// for now, we assume the plugin directory content contains valid plugin packages
 		// TODO Validity checks
@@ -57,21 +56,28 @@ module.exports = class PluginCache {
 		const plugins = this._readPluginDir();
 
 		// Load the plugin modules into the cache
-		const commandMap = plugins.reduce((map, { path: pluginPath }) => {
-			try {
-				const commands = require(pluginPath);
-				commands.forEach(Command => {
-					const command = new Command({ log: log });
-					map[command.id] = command;
-				});
-				return map;
-			} catch (err) {
-				log(err.message);
-				return map;
-			}
-		}, {});
+		const pluginMap = plugins.reduce(
+			(map, { id: pluginID, path: pluginPath }) => {
+				try {
+					log(`Loading plugin ${pluginID}`);
 
-		this.plugins = commandMap;
+					const commands = require(pluginPath);
+					commands.forEach(Command => {
+						const command = new Command({ log: log });
+						map[command.id] = command;
+					});
+
+					log(`Plugin ${pluginID} loaded`);
+					return map;
+				} catch (err) {
+					log(`Error loading plugin: ${err.message}`);
+					return map;
+				}
+			},
+			{}
+		);
+
+		this.plugins = pluginMap;
 
 		log('Command modules loaded');
 	}
