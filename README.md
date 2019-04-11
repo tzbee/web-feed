@@ -34,12 +34,12 @@ List the plugins installed
 
 `crawler list`
 
-### crawl
+### run
 
-Crawl the specified command with the given options.
+Run the specified plugin command with the given options.
 The results are displayed on the standard output in json format.
 
-`crawler crawl --command=command-id [..options]`
+`crawler run --plugin=plugin-id [..options]`
 
 ### daemon
 
