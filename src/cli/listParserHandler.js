@@ -1,12 +1,14 @@
 const log = require('./cli-log');
 
 const displayCommand = ({
+    id,
     title,
     description,
     args = [],
     returnFields = []
 }) => {
     log('\n');
+    log('ID:' + id);
     log('TITLE: ' + title);
     log('DESCRIPTION: ' + description);
     log('INPUT ARGUMENTS: ' + inputArgsToString(args));

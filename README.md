@@ -1,6 +1,6 @@
-# crawl-bot
+# web-feed
 
-A configurable web crawler written in NodeJS
+A configurable, plugin based, web feed written in NodeJS
 
 ## Installation
 

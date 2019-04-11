@@ -1,11 +1,11 @@
 {
-  "name": "crawler",
+  "name": "web-feed",
   "version": "1.0.0",
   "main": "src/app.js",
   "bin": "./src/app.js",
   "scripts": {
     "test": "mocha test",
-    "run": "src/app"
+    "app": "node ./src/app"
   },
   "author": "tzbee",
   "license": "ISC",
