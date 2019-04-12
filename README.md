@@ -4,7 +4,11 @@ A configurable, plugin based, web feed written in NodeJS
 
 ## Installation
 
-Clone the repository and npm install.
+Clone the repository
+
+`cd web-feed`
+
+`npm install` or `npm install -g` to run it globally
 
 ## Usage
 
