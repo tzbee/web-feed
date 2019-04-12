@@ -13,10 +13,14 @@ Clone the repository
 ## Usage
 
 The application is used through console interface by adding custom plugins and using their commands to retrieve data from the web.
-Each plugin must follow a specific interface, illustrated in the example plugin.[Not yet commited]
+Each plugin must follow a specific interface, illustrated in the example plugin.[TODO]
 
 It can also be used as a daemon through I/O messages. This is mainly to communicate with
 a external app (chrome extension in this case).
+
+## Plugin API
+
+[TODO]
 
 ## CLI API
 
@@ -56,4 +60,4 @@ and read through standard err streams.[More info later]
 ### plugin-info
 
 Display the plugin api specified by its own configuration file
-[To be implemented]
+[TODO]
