@@ -17,10 +17,8 @@ const pluginRunner = new PluginRunner(pluginCache);
 */
 const listCommand = require('./cli-commands/cli-list')(pluginCache);
 const runCommand = require('./cli-commands/cli-run')(pluginRunner);
-const {
-	install: installCommand,
-	remove: removeCommand
-} = require('./cli-commands/cli-plugin')(pluginCache);
+const removeCommand = require('./cli-commands/cli-remove')(pluginCache);
+const installCommand = require('./cli-commands/cli-install')(pluginCache);
 const daemonCommand = require('./cli-commands/cli-daemon')(
 	dispatcher,
 	pluginRunner,
