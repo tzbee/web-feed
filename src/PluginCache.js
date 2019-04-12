@@ -15,10 +15,6 @@ module.exports = class PluginCache {
 		this._load();
 	}
 
-	_getPluginPath(pluginID) {
-		return path.join(this.pluginsDir, pluginID);
-	}
-
 	installPlugin(pluginPath) {
 		pluginPath = path.resolve(pluginPath);
 		const pluginID = path.parse(pluginPath).name;
@@ -38,18 +34,6 @@ module.exports = class PluginCache {
 		log(`Removing directory ${pluginPath}`);
 		fs.removeSync(pluginPath);
 		log(`Plugin ${pluginID} uninstallation complete`);
-	}
-
-	add(module) {
-		return this._installModule(module)
-			.then(moduleID => this._registerModule(moduleID))
-			.catch(err => log(`${err.message}\n${err.stack}`));
-	}
-
-	remove(module) {
-		return this._uninstallModule(module)
-			.then(moduleID => this._unregisterModule(moduleID))
-			.catch(err => log(`${err.message}\n${err.stack}`));
 	}
 
 	get() {
@@ -112,75 +96,5 @@ module.exports = class PluginCache {
 		const plugin = this.plugins[id];
 		if (!plugin) throw new Error(`Cannot find plugin with id ${id}`);
 		return plugin;
-	}
-
-	serialize() {
-		const plugins = this.get();
-
-		return plugins.map(plugin => {
-			plugin.commands = plugin.commands.map(command =>
-				this._serializeCommand(command)
-			);
-			return plugin;
-		});
-	}
-
-	_serializeCommand(command) {
-		const commandCopy = Object.assign({}, command);
-		delete commandCopy['fn'];
-		return commandCopy;
-	}
-
-	// Sync
-	_getModuleID(packagePath) {
-		const packageConfig = require(path.resolve(
-			packagePath,
-			'package.json'
-		));
-		return packageConfig && packageConfig.name;
-	}
-
-	// Async
-	// Returns Promise
-	// todo create file if it does not exist
-	_writeToPluginFile(pluginIDs) {
-		return new Promise((resolve, reject) => {
-			fs.writeFile(
-				path.resolve(__dirname, configFilePath),
-				JSON.stringify(pluginIDs),
-				err => {
-					if (!err) {
-						resolve();
-					} else {
-						reject(err);
-					}
-				}
-			);
-		});
-	}
-
-	// Async
-	// Returns Promise
-	_registerModule(moduleID) {
-		const pluginIDs = this._loadPluginIDs();
-		const pluginIDMap = pluginIDs.reduce(
-			(res, pluginID) => (res[pluginID] = pluginID) && res,
-			{}
-		);
-		pluginIDMap[moduleID] = moduleID;
-		const newPluginIDs = Object.values(pluginIDMap);
-		return this._writeToPluginFile(newPluginIDs);
-	}
-
-	_unregisterModule(moduleID) {
-		const pluginIDs = this._loadPluginIDs();
-		const pluginIDMap = pluginIDs.reduce(
-			(res, pluginID) => (res[pluginID] = pluginID) && res,
-			{}
-		);
-		delete pluginIDMap[moduleID];
-		const newPluginIDs = Object.values(pluginIDMap);
-
-		return this._writeToPluginFile(newPluginIDs);
 	}
 };
