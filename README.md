@@ -28,13 +28,13 @@ a external app (chrome extension in this case).
 
 Install a plugin into the application
 
-`web-feed install --plugin=path/to/plugin-module`
+`web-feed install path/to/plugin-module`
 
 ### remove
 
 Remove a plugin from the application
 
-`web-feed remove --plugin=plugin-module`
+`web-feed remove plugin-module`
 
 ### list
 
@@ -47,7 +47,7 @@ List the plugins installed
 Run the specified plugin command with the given options.
 The results are displayed on the standard output in json format.
 
-`web-feed run --plugin=plugin-id [..options]`
+`web-feed run plugin-id [..options]`
 
 ### daemon
 

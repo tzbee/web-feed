@@ -1,2 +1,3 @@
-module.exports = pluginCache => ({ plugin }) =>
-	pluginCache.installPlugin(plugin);
+module.exports = pluginCache => ({ _options }) => {
+	_options.forEach(plugin => pluginCache.installPlugin(plugin));
+};

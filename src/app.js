@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const args = require('minimist')(process.argv.slice(2));
+const minimist = require('minimist');
 const log = require('./cli-log');
 
 const PluginCache = require('./PluginCache');
@@ -36,32 +36,35 @@ const COMMAND_MAP = {
 	remove: removeCommand
 };
 
-// Get the command to run and its arguments
-// Throw error if no command or multiple commands are passed
+const parseArgv = () => {
+	const args = minimist(process.argv.slice(2));
 
-// Get the command id
-const argsCopy = Object.assign({}, args);
-const commandArg = argsCopy['_'];
+	const _args = args['_'];
+	const command = _args[0];
 
-if (!commandArg || commandArg.length !== 1) {
-	throw new Error('Wrong command count');
-}
+	if (!(command in COMMAND_MAP)) {
+		throw new Error(`No command ${command} found`);
+	}
 
-const command = commandArg[0];
+	const [, ..._options] = _args;
+	const { _, ...namedOptions } = args; // eslint-disable-line no-unused-vars
 
-if (!(command in COMMAND_MAP)) {
-	throw new Error(`No command ${command} found`);
-}
+	return {
+		command,
+		options: { _options, namedOptions }
+	};
+};
 
-// The command is valid,
-// Now get its params
-delete argsCopy['_'];
-const commandParams = argsCopy;
+const { command, options } = parseArgv();
 
 const handler = COMMAND_MAP[command];
 
 try {
-	handler(commandParams);
+	handler(options);
 } catch (err) {
-	log(err.message + '\n' + err.stack);
+	log(
+		`Error while executing command ${command}:${err.message +
+			'\n' +
+			err.stack}`
+	);
 }

@@ -8,18 +8,15 @@ const log = require('../cli-log');
         _ The command arguments
 */
 module.exports = pluginRunner => {
-    return cliOptions => {
-        const { plugin } = cliOptions;
+    return ({ _options, namedOptions }) => {
+        const plugin = _options[0];
 
-        // Isolate the command options
-        const crawlerOptions = Object.assign({}, cliOptions);
-        delete crawlerOptions['plugin'];
+        if (!plugin) {
+            throw new Error('No plugin command specified');
+        }
 
-        pluginRunner
-            .run(plugin, crawlerOptions)
-            .then(results => {
-                results.map(result => result.title || result.id).forEach(log);
-            })
-            .catch(err => log(err.message));
+        pluginRunner.run(plugin, namedOptions).then(results => {
+            results.map(result => result.title || result.id).forEach(log);
+        });
     };
 };
