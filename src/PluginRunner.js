@@ -1,4 +1,5 @@
 const log = require('./log');
+const { isArray, isObject } = require('./utils');
 
 module.exports = class PluginRunner {
     constructor(pluginCache) {
@@ -52,19 +53,11 @@ module.exports = class PluginRunner {
         }, {});
     }
 
-    _isArray(arg) {
-        return (arg && arg.constructor && arg.constructor.name) === 'Array';
-    }
-
-    _isString(arg) {
-        return typeof arg === 'string';
-    }
-
     _checkPropType(propValue, type) {
         const map = {
-            Array: this._isArray,
-            Selection: this._isArray,
-            Query: arg => typeof arg === 'object'
+            Array: isArray,
+            Selection: isArray,
+            Query: isObject
         };
 
         const typeCheckFn = map[type] || this._isString;
