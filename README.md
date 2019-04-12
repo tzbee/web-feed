@@ -4,7 +4,7 @@ A configurable, plugin based, web feed written in NodeJS
 
 ## Installation
 
-[Temporary] Clone the repository and npm install.
+Clone the repository and npm install.
 
 ## Usage
 
@@ -16,30 +16,30 @@ a external app (chrome extension in this case).
 
 ## CLI API
 
-### add
+### install
 
-Add a plugin to the application
+Install a plugin into the application
 
-`crawler add --module=path/to/plugin-module`
+`web-feed install --plugin=path/to/plugin-module`
 
 ### remove
 
 Remove a plugin from the application
 
-`crawler remove --module=module-id`
+`web-feed remove --plugin=plugin-module`
 
 ### list
 
 List the plugins installed
 
-`crawler list`
+`web-feed list`
 
 ### run
 
 Run the specified plugin command with the given options.
 The results are displayed on the standard output in json format.
 
-`crawler run --plugin=plugin-id [..options]`
+`web-feed run --plugin=plugin-id [..options]`
 
 ### daemon
 
@@ -47,7 +47,7 @@ Start the daemon.
 Input and output must be sent through the standard input
 and read through standard err streams.[More info later]
 
-`crawler daemon`
+`web-feed daemon`
 
 ### plugin-info
 

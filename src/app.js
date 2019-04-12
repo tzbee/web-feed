@@ -18,7 +18,7 @@ const pluginRunner = new PluginRunner(pluginCache);
 const listCommand = require('./cli-commands/cli-list')(pluginCache);
 const runCommand = require('./cli-commands/cli-run')(pluginRunner);
 const {
-	add: addCommand,
+	install: installCommand,
 	remove: removeCommand
 } = require('./cli-commands/cli-plugin')(pluginCache);
 const daemonCommand = require('./cli-commands/cli-daemon')(
@@ -34,7 +34,7 @@ const COMMAND_MAP = {
 	list: listCommand,
 	daemon: daemonCommand,
 	run: runCommand,
-	add: addCommand,
+	install: installCommand,
 	remove: removeCommand
 };
 
@@ -65,5 +65,5 @@ const handler = COMMAND_MAP[command];
 try {
 	handler(commandParams);
 } catch (err) {
-	log(err.message);
+	log(err.message + '\n' + err.stack);
 }

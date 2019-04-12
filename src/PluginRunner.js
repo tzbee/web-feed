@@ -8,10 +8,10 @@ module.exports = class PluginRunner {
     // Async
     run(pluginID, options) {
         try {
-            const command = this.pluginCache.getCommandByID(pluginID);
+            const plugin = this.pluginCache.getPluginByID(pluginID);
 
             const normalizedOptions = this._normalizeCommandProps(
-                command,
+                plugin,
                 options
             );
 
@@ -21,7 +21,7 @@ module.exports = class PluginRunner {
                 )}`
             );
 
-            return command.run(normalizedOptions);
+            return plugin.run(normalizedOptions);
         } catch (err) {
             return Promise.reject(
                 new Error(

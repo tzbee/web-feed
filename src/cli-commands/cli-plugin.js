@@ -1,6 +1,6 @@
 module.exports = pluginCache => {
 	return {
-		add: ({ module }) => pluginCache.add(module),
-		remove: ({ module }) => pluginCache.remove(module)
+		install: ({ plugin }) => pluginCache.installPlugin(plugin),
+		remove: ({ plugin }) => pluginCache.uninstallPlugin(plugin)
 	};
 };

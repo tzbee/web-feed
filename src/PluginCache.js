@@ -1,6 +1,6 @@
 const log = require('./log');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const DEFAULT_PLUGIN_DIR = path.resolve(
 	require('app-root-path').toString(),
@@ -13,6 +13,31 @@ module.exports = class PluginCache {
 		this.pluginsDir = pluginsDir;
 		this.plugins = {};
 		this._load();
+	}
+
+	_getPluginPath(pluginID) {
+		return path.join(this.pluginsDir, pluginID);
+	}
+
+	installPlugin(pluginPath) {
+		pluginPath = path.resolve(pluginPath);
+		const pluginID = path.parse(pluginPath).name;
+		const destPluginPath = path.join(this.pluginsDir, pluginID);
+
+		log(`Installing plugin ${pluginID}`);
+		log(`Copying ${pluginPath} to ${destPluginPath}`);
+
+		fs.copySync(pluginPath, destPluginPath);
+
+		log(`Plugin ${pluginID} installation complete`);
+	}
+
+	uninstallPlugin(pluginID) {
+		log(`Uninstalling plugin ${pluginID}`);
+		const pluginPath = path.join(this.pluginsDir, pluginID);
+		log(`Removing directory ${pluginPath}`);
+		fs.removeSync(pluginPath);
+		log(`Plugin ${pluginID} uninstallation complete`);
 	}
 
 	add(module) {
@@ -79,14 +104,14 @@ module.exports = class PluginCache {
 
 		this.plugins = pluginMap;
 
-		log('Command modules loaded');
+		log('Plugin modules loaded');
 	}
 
-	getCommandByID(id) {
-		log(`Finding command with id ${id}`);
-		const command = this.plugins[id];
-		if (!command) throw new Error(`Cannot find command with id ${id}`);
-		return command;
+	getPluginByID(id) {
+		log(`Finding plugin with id ${id}`);
+		const plugin = this.plugins[id];
+		if (!plugin) throw new Error(`Cannot find plugin with id ${id}`);
+		return plugin;
 	}
 
 	serialize() {
