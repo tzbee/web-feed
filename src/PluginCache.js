@@ -4,7 +4,6 @@ const fs = require('fs-extra');
 
 const DEFAULT_PLUGIN_DIR = path.resolve(
 	require('app-root-path').toString(),
-	'..',
 	'plugins'
 );
 
