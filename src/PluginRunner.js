@@ -1,5 +1,5 @@
 const log = require('./log');
-const { isArray, isObject } = require('./utils');
+const { isArray, isObject, isString } = require('./utils');
 
 module.exports = class PluginRunner {
     constructor(pluginCache) {
@@ -60,7 +60,7 @@ module.exports = class PluginRunner {
             Query: isObject
         };
 
-        const typeCheckFn = map[type] || this._isString;
+        const typeCheckFn = map[type] || isString;
         return (typeCheckFn && typeCheckFn(propValue)) || false;
     }
 };
