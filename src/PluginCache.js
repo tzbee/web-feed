@@ -22,6 +22,7 @@ module.exports = class PluginCache {
 		log(`Installing plugin ${pluginID}`);
 		log(`Copying ${pluginPath} to ${destPluginPath}`);
 
+		fs.removeSync(destPluginPath);
 		fs.copySync(pluginPath, destPluginPath);
 
 		log(`Plugin ${pluginID} installation complete`);
